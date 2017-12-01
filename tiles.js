@@ -64,8 +64,8 @@ class TheTilesGame {
 
         //Обработчики
         this.target.addEventListener('mouseleave', () => {
-            this.hideElement(this.topArrow);
-            this.hideElement(this.leftArrow);
+            this.constructor.hideElement(this.topArrow);
+            this.constructor.hideElement(this.leftArrow);
         });
 
         //все опции закину в один метод для читаемости
@@ -92,7 +92,7 @@ class TheTilesGame {
     initMatrix(){
         this.matrix = new Array(this.options.sizeY).fill(0).map(() => {
             return new Array(this.options.sizeX).fill(0).map(() => {
-                return this.getRandomNumber()
+                return this.constructor.getRandomNumber();
             })
         });
     }
@@ -116,8 +116,8 @@ class TheTilesGame {
         td.addEventListener("mouseover", (e) => {
             this.options.currentX = e.target.cellIndex;
             this.options.currentY = e.target.parentNode.rowIndex;
-            this.options.sizeX === 1 || this.showElement(this.topArrow);
-            this.options.sizeY === 1 || this.showElement(this.leftArrow);
+            this.options.sizeX === 1 || this.constructor.showElement(this.topArrow);
+            this.options.sizeY === 1 || this.constructor.showElement(this.leftArrow);
             this.setArrowsPositionsAccordingToDOMElement(e.target);
         });
 
@@ -150,7 +150,7 @@ class TheTilesGame {
                 }
 
                 if (this.options.sizeX === 1) {
-                    this.hideElement(this.topArrow);
+                    this.constructor.hideElement(this.topArrow);
                 }
 
                 break;
@@ -171,14 +171,14 @@ class TheTilesGame {
                 }
 
                 if ( this.options.sizeY === 1 ){
-                    this.hideElement(this.leftArrow)
+                    this.constructor.hideElement(this.leftArrow)
                 }
 
                 break;
             case 'addColunm':
                 // console.log('addColunm');
                 this.matrix.forEach((row)=>{
-                    row.push(this.getRandomNumber());
+                    row.push(this.constructor.getRandomNumber());
                 });
                 this.options.sizeX += 1;
                 for (let i = 0; i < this.options.sizeY; i++) {
@@ -187,7 +187,7 @@ class TheTilesGame {
                 break;
             case 'addRow':
                 // console.log('addRow');
-                this.matrix.push(new Array(this.options.sizeX).fill(0).map(item=>this.getRandomNumber()));
+                this.matrix.push(new Array(this.options.sizeX).fill(0).map(item=>this.constructor.getRandomNumber()));
                 this.options.sizeY += 1;
 
                 let tr = document.createElement("tr");
@@ -200,7 +200,7 @@ class TheTilesGame {
 
                 break;
             default:
-                return
+                return false;
         }
     }
 
