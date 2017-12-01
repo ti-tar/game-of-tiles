@@ -1,0 +1,98 @@
+<style>
+
+    .tiles {
+        display: inline-block;
+        position: relative;
+    }
+    .top-arrow {
+        top:0; left: 55px;
+        background-color: #b00100;
+        display: none;
+    }
+    .left-arrow {
+        top:55px; left: 0px;
+        background-color: #b00100;
+        display: none;
+    }
+    .right-arrow {
+        top:55px; left: auto; right: 0;
+        background-color: #f1a417;
+    }
+    .bottom-arrow {
+        top: auto; bottom: 0; left: 55px;
+        background-color: #f1a417;
+    }
+
+    .tiles .top-arrow:hover,
+    .tiles .left-arrow:hover {
+        background-color: #c84d4c;
+    }
+
+    .tiles .right-arrow:hover,
+    .tiles .bottom-arrow:hover {
+        background-color: #f5bf5c;
+    }
+
+        .top-arrow span,
+        .left-arrow span,
+        .right-arrow span,
+        .bottom-arrow span
+        {
+            display: block;
+            padding-top: 14px;
+            user-select: none;
+        }
+
+    .tiles .arrow {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        text-align: center;
+        color: #fff;
+        font: bold 16px Verdana;
+        vertical-align: middle;
+        cursor: pointer;
+        transition: 1s;
+    }
+
+    .tiles table {
+        border: 1px solid #4dabe4;
+        margin: 52px;
+        border-spacing: 2px;
+    }
+    .tiles td {
+        width: 50px;
+        height: 50px;
+        padding: 0;
+        background-color: #4dabe4;
+        user-select: none;
+        color: white;
+        text-align: center;
+        vertical-align: middle;
+        cursor: pointer;
+    }
+</style>
+
+<div class="tiles">
+    <div class="top-arrow arrow">
+        <span>-</span>
+    </div>
+    <div class="left-arrow arrow">
+        <span>-</span>
+    </div>
+    <div class="right-arrow arrow">
+        <span>+</span>
+    </div>
+    <div class="bottom-arrow arrow">
+        <span>+</span>
+    </div>
+
+    <table>
+        <tbody>
+            <tr>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
