@@ -9,9 +9,9 @@ class TheTilesGame {
         if (domElems.length){
             // run separated instance for each dom-elem
             domElems.forEach((mountNode) => new this(mountNode, options))
-        } else {
-            return false;
         }
+
+        return true;
     }
 
     constructor(mountNode, options={}){
@@ -90,19 +90,17 @@ class TheTilesGame {
     }
 
     initMatrix(){
-        this.matrix = new Array(this.options.sizeY).fill(0).map(() => {
-            return new Array(this.options.sizeX).fill(0).map(() => {
-                return this.constructor.getRandomNumber();
-            })
-        });
+        this.matrix = new Array(this.options.sizeY).fill(0).
+            map(() => new Array(this.options.sizeX).fill(0).
+                map(() => this.constructor.getRandomNumber()));
     }
 
     initRender(){
         this.tbody.innerHTML = '';
-        this.matrix.forEach((row)=>{
+        this.matrix.forEach((row) => {
             let tr = document.createElement("tr");
 
-            row.forEach((cell)=>{
+            row.forEach((cell) => {
                 tr.appendChild(this.genNewTdElem(cell));
             });
 
@@ -122,94 +120,102 @@ class TheTilesGame {
         });
 
         td.innerHTML = innerHTML;
+
         return td;
     }
 
     makeAction(action = ''){
 
-        switch(action){
+        switch (action){
 
-            case 'delColunm':
-                //console.log('delColunm');
+        case 'delColunm':
+            //console.log('delColunm');
 
-                this.matrix.forEach((row)=>{
-                    row.splice(this.options.currentX, 1);
-                });
+            this.matrix.forEach((row) => {
+                row.splice(this.options.currentX, 1);
+            });
 
-                for (let i=0; i < this.matrix.length; i++){
-                    let tdToRemove = this.tbody.children[i].children[this.options.currentX];
-                    this.tbody.children[i].removeChild(tdToRemove);
-                }
+            for (let i=0; i < this.matrix.length; i++){
+                let tdToRemove = this.tbody.children[i].children[this.options.currentX];
+                this.tbody.children[i].removeChild(tdToRemove);
+            }
 
-                this.options.sizeX = this.matrix[0].length;
+            this.options.sizeX = this.matrix[0].length;
 
-                //if last col
-                if (this.options.currentX === this.options.sizeX){
-                    this.options.currentX -= 1;
-                    this.setArrowsPositionsAccordingToDOMElement(this.tbody.children[this.options.currentY].children[this.options.currentX]);
-                }
+            //if last col
+            if (this.options.currentX === this.options.sizeX){
+                this.options.currentX -= 1;
+                this.setArrowsPositionsAccordingToDOMElement(this.tbody.children[this.options.currentY].children[this.options.currentX]);
+            }
 
-                if (this.options.sizeX === 1) {
-                    this.constructor.hideElement(this.topArrow);
-                }
+            if (this.options.sizeX === 1) {
+                this.constructor.hideElement(this.topArrow);
+            }
 
-                break;
-            case 'delRow':
-                //console.log('delRow');
+            break;
+        case 'delRow':
+            //console.log('delRow');
 
-                this.matrix.splice(this.options.currentY, 1);
+            this.matrix.splice(this.options.currentY, 1);
 
-                let trToRemove = this.tbody.children[this.options.currentY];
-                this.tbody.removeChild(trToRemove);
+            let trToRemove = this.tbody.children[this.options.currentY];
+            this.tbody.removeChild(trToRemove);
 
-                this.options.sizeY = this.matrix.length;
+            this.options.sizeY = this.matrix.length;
 
-                //if last row
-                if (this.options.currentY === this.options.sizeY) {
-                    this.options.currentY -= 1;
-                    this.setArrowsPositionsAccordingToDOMElement(this.tbody.children[this.options.currentY].children[this.options.currentX]);
-                }
+            //if last row
+            if (this.options.currentY === this.options.sizeY) {
+                this.options.currentY -= 1;
+                this.setArrowsPositionsAccordingToDOMElement(this.tbody.children[this.options.currentY].children[this.options.currentX]);
+            }
 
-                if ( this.options.sizeY === 1 ){
-                    this.constructor.hideElement(this.leftArrow)
-                }
+            if (this.options.sizeY === 1){
+                this.constructor.hideElement(this.leftArrow)
+            }
 
-                break;
-            case 'addColunm':
-                // console.log('addColunm');
-                this.matrix.forEach((row)=>{
-                    row.push(this.constructor.getRandomNumber());
-                });
-                this.options.sizeX += 1;
-                for (let i = 0; i < this.options.sizeY; i++) {
-                    this.tbody.children[i].appendChild(this.genNewTdElem(this.matrix[i][this.options.sizeX - 1]))
-                }
-                break;
-            case 'addRow':
-                // console.log('addRow');
-                this.matrix.push(new Array(this.options.sizeX).fill(0).map(item=>this.constructor.getRandomNumber()));
-                this.options.sizeY += 1;
+            break;
+        case 'addColunm':
+            // console.log('addColunm');
+            this.matrix.forEach((row) => {
+                row.push(this.constructor.getRandomNumber());
+            });
+            this.options.sizeX += 1;
+            for (let i = 0; i < this.options.sizeY; i++) {
+                this.tbody.children[i].appendChild(this.genNewTdElem(this.matrix[i][this.options.sizeX - 1]))
+            }
+            break;
+        case 'addRow':
+            // console.log('addRow');
+            this.matrix.push(new Array(this.options.sizeX).fill(0).
+                map(() => this.constructor.getRandomNumber()));
+            this.options.sizeY += 1;
 
-                let tr = document.createElement("tr");
+            let tr = document.createElement("tr");
 
-                this.matrix[this.options.sizeY-1].forEach((cell)=>{
-                    tr.appendChild(this.genNewTdElem(cell));
-                });
+            this.matrix[this.options.sizeY-1].forEach((cell) => {
+                tr.appendChild(this.genNewTdElem(cell));
+            });
 
-                this.tbody.appendChild(tr);
+            this.tbody.appendChild(tr);
 
-                break;
-            default:
-                return false;
+            break;
+        default:
+            return false;
         }
+
+        return true;
     }
 
     static hideElement(domElement) {
         domElement.style.display = 'none';
+
+        return true;
     }
 
     static showElement(domElement) {
         domElement.style.display = 'block';
+
+        return true;
     }
 
     static getRandomNumber(){
