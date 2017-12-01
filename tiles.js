@@ -7,15 +7,19 @@ class TheTilesGame extends HTMLElement {
     }
 
     connectedCallback(){
-        let defaultOptions = {
+
+        this.options = {
             currentX :0,
             currentY :0,
             sizeX : 4,
             sizeY : 4,
-            styles : 'default'
         };
-        this.options = Object.assign({}, defaultOptions);
 
+        for (let key in this.options) {
+            this.options[key] = parseInt( key in this.attributes ? this.attributes[key].value : this.options[key]);
+        }
+
+        console.log(this.options);
         this.attachShadow({mode: 'open'});
 
         let template = document.querySelector('link#tiles-scaffold-module').import.querySelector('template').content;
@@ -51,7 +55,6 @@ class TheTilesGame extends HTMLElement {
         this.rightArrow = this.shadowRoot.querySelector('right-arrow');
         this.bottomArrow = this.shadowRoot.querySelector('bottom-arrow');
 
-        console.log(this.topArrow);
 
         //Обработчики
         this.addEventListener('mouseleave', () => {
