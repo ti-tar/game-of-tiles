@@ -8,13 +8,13 @@ class TheTilesGame {
 
         if (domElems.length){
             // run separated instance for each dom-elem
-            domElems.forEach((domElem) => new this(domElem, options))
+            domElems.forEach((mountNode) => new this(mountNode, options))
         } else {
-            return
+            return false;
         }
     }
 
-    constructor(domElem, options={}){
+    constructor(mountNode, options={}){
         let defaultOptions = {
             currentX :0,
             currentY :0,
@@ -22,8 +22,7 @@ class TheTilesGame {
             sizeY : 4,
         };
         this.options = Object.assign({}, defaultOptions, options);
-        //this.target - верхний елемент, куда инитить весь DOM
-        this.target = domElem;
+        this.mountNode = mountNode;
         this.run()
     }
 
@@ -32,11 +31,12 @@ class TheTilesGame {
         // init this.matrix - двумерный массив заполненый нолями
         this.initMatrix();
         // начальный рендер таблицы
-        this. initRender()
+        this.initRender()
     }
 
     initDOM(){
         /*
+         * mountNode > .tiles :
          *                 .top-arrow
          *                 topArrow
          *              ----------------
@@ -48,9 +48,10 @@ class TheTilesGame {
          *                 bottomArrow
          * */
 
-        let link = document.querySelector('link#tiles-scaffold-module');
-        let content = link.import.querySelector('.tiles');
-        this.target.appendChild(content.cloneNode(true));
+        let link = document.querySelector('link#tiles-scaffold-module').import.querySelector('.tiles');
+        this.target = link.cloneNode(true);
+        this.mountNode.appendChild(this.target);
+
 
         // в tbody будут рендериться tr/td
         this.tbody = this.target.querySelector('tbody');
@@ -82,14 +83,6 @@ class TheTilesGame {
         });
     }
 
-    hideElement(domElement) {
-        domElement.style.display = 'none';
-    }
-
-    showElement(domElement) {
-        domElement.style.display = 'block';
-    }
-
     setArrowsPositionsAccordingToDOMElement(domElem){
         let [top, left, width, height] = [domElem.offsetTop, domElem.offsetLeft, domElem.clientWidth, domElem.offsetHeight];
         this.leftArrow.style.top = (top + height + 3) + 'px';
@@ -97,8 +90,8 @@ class TheTilesGame {
     }
 
     initMatrix(){
-        this.matrix = new Array(this.options.sizeY).fill(0).map(itemY => {
-            return new Array(this.options.sizeX).fill(0).map(itemX => {
+        this.matrix = new Array(this.options.sizeY).fill(0).map(() => {
+            return new Array(this.options.sizeX).fill(0).map(() => {
                 return this.getRandomNumber()
             })
         });
@@ -211,7 +204,15 @@ class TheTilesGame {
         }
     }
 
-    getRandomNumber(){
+    static hideElement(domElement) {
+        domElement.style.display = 'none';
+    }
+
+    static showElement(domElement) {
+        domElement.style.display = 'block';
+    }
+
+    static getRandomNumber(){
         return Math.floor((Math.random() * 10) + 1);
     }
 }
