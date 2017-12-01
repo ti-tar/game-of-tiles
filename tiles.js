@@ -20,6 +20,7 @@ class TheTilesGame {
             currentY :0,
             sizeX : 4,
             sizeY : 4,
+            styles : 'default'
         };
         this.options = Object.assign({}, defaultOptions, options);
         this.mountNode = mountNode.attachShadow({mode: 'open'});
@@ -50,7 +51,7 @@ class TheTilesGame {
          * */
 
         let link = document.querySelector('link#tiles-scaffold-module').import;
-        this.style = link.querySelector('style');
+        this.style = link.querySelector(`style#${this.options.styles}-styles`);
         this.target = link.querySelector('tiles-place').cloneNode(true);
 
         // TODO стили в shadow DOM?
