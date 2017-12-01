@@ -22,7 +22,7 @@ class TheTilesGame {
             sizeY : 4,
         };
         this.options = Object.assign({}, defaultOptions, options);
-        this.mountNode = mountNode;
+        this.mountNode = mountNode.attachShadow({mode: 'open'});
         this.run()
     }
 
@@ -36,20 +36,25 @@ class TheTilesGame {
 
     initDOM(){
         /*
-         * mountNode > .tiles :
-         *                 .top-arrow
+         * <tiles-node>
+         *     \ <tiles-place> :
+         *                 top-arrow
          *                 topArrow
          *              ----------------
-         * .left-arrow  |  table       | .right-arrow
-         * leftArrow    |  table       | rightArrow
-         *              |       \ tbody|
-         *              ----------------
-         *                 .bottom-arrow
-         *                 bottomArrow
+         * left-arrow  |  table       | right-arrow
+         * leftArrow   |  table       | rightArrow
+         *             |       \ tbody|
+         *             ----------------
+         *                bottom-arrow
+         *                bottomArrow
          * */
 
-        let link = document.querySelector('link#tiles-scaffold-module').import.querySelector('.tiles');
-        this.target = link.cloneNode(true);
+        let link = document.querySelector('link#tiles-scaffold-module').import;
+        this.style = link.querySelector('style');
+        this.target = link.querySelector('tiles-place').cloneNode(true);
+
+        // TODO стили в shadow DOM?
+        this.mountNode.innerHTML = `<style> ${this.style.innerHTML} </style>`;
         this.mountNode.appendChild(this.target);
 
 
@@ -57,10 +62,10 @@ class TheTilesGame {
         this.tbody = this.target.querySelector('tbody');
 
         // стрелки
-        this.topArrow = this.target.querySelector('.top-arrow');
-        this.leftArrow = this.target.querySelector('.left-arrow');
-        this.rightArrow = this.target.querySelector('.right-arrow');
-        this.bottomArrow = this.target.querySelector('.bottom-arrow');
+        this.topArrow = this.target.querySelector('top-arrow');
+        this.leftArrow = this.target.querySelector('left-arrow');
+        this.rightArrow = this.target.querySelector('right-arrow');
+        this.bottomArrow = this.target.querySelector('bottom-arrow');
 
         //Обработчики
         this.target.addEventListener('mouseleave', () => {
@@ -129,7 +134,6 @@ class TheTilesGame {
         switch (action){
 
         case 'delColunm':
-            //console.log('delColunm');
 
             this.matrix.forEach((row) => {
                 row.splice(this.options.currentX, 1);
@@ -154,7 +158,6 @@ class TheTilesGame {
 
             break;
         case 'delRow':
-            //console.log('delRow');
 
             this.matrix.splice(this.options.currentY, 1);
 
@@ -175,7 +178,7 @@ class TheTilesGame {
 
             break;
         case 'addColunm':
-            // console.log('addColunm');
+
             this.matrix.forEach((row) => {
                 row.push(this.constructor.getRandomNumber());
             });
@@ -185,7 +188,7 @@ class TheTilesGame {
             }
             break;
         case 'addRow':
-            // console.log('addRow');
+
             this.matrix.push(new Array(this.options.sizeX).fill(0).
                 map(() => this.constructor.getRandomNumber()));
             this.options.sizeY += 1;

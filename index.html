@@ -8,6 +8,7 @@
     <script type="text/javascript" src="tiles.js"></script>
 
     <style>
+        tiles-node,
         .tiles-wrapper1,
         .tiles-wrapper2
         {
@@ -16,6 +17,8 @@
     </style>
 </head>
 <body>
+    <h3>TheTilesGame.init('tiles-node', { sizeX : 8, sizeY : 3});</h3>
+    <tiles-node></tiles-node>
 
     <h3>TheTilesGame.init('.tiles-wrapper1', { sizeX : 3, sizeY : 5});</h3>
     <div class="tiles-wrapper1"></div>
@@ -24,6 +27,7 @@
     <div class="tiles-wrapper2"></div>
 
     <script defer>
+        TheTilesGame.init('tiles-node', { sizeX : 8, sizeY : 3});
         TheTilesGame.init('.tiles-wrapper1', { sizeX : 3, sizeY : 5});
         TheTilesGame.init('.tiles-wrapper2', { sizeX : 8, sizeY : 7});
     </script>
