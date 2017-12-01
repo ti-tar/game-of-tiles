@@ -19,7 +19,6 @@ class TheTilesGame extends HTMLElement {
             this.options[key] = parseInt( key in this.attributes ? this.attributes[key].value : this.options[key]);
         }
 
-        console.log(this.options);
         this.attachShadow({mode: 'open'});
 
         let template = document.querySelector('link#tiles-scaffold-module').import.querySelector('template').content;
