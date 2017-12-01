@@ -1,6 +1,5 @@
 # game-of-tiles
-Bro Test #1
-
+Bro Test #1 - [https://ti-tar.github.io/game-of-tiles/](https://ti-tar.github.io/game-of-tiles/)
 
 ### v2.0:
 - Переписано из div'ов на таблицы
